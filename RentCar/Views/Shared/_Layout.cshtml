@@ -1,0 +1,180 @@
+﻿@using System.Net.Http
+@using RentCar.Utility
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+@{
+
+    List<Products> products = HttpContextAccessor.HttpContext.Session.Get<List<Products>>("products");
+    if (products == null)
+    {
+        products = new List<Products>();
+    }
+    int count = products.Count();
+}@using Microsoft.AspNetCore.Identity
+
+@inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - RentCar</title>
+
+
+
+    <environment include="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment exclude="Development">
+        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"
+              asp-fallback-href="~/lib/bootstrap/dist/css/bootstrap.min.css"
+              asp-fallback-test-class="sr-only" asp-fallback-test-property="position" asp-fallback-test-value="absolute" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css" />
+</head>
+<body>
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a asp-area="" asp-controller="Home" asp-action="Index" class="navbar-brand">RentCar</a>
+
+            </div>
+            <div class="navbar-collapse collapse">
+                @if (User.IsInRole("Admin"))
+                {
+                    <ul class="nav navbar-nav">
+                        <li><a class="navbar-link" asp-area="Admin" asp-controller="ProductTypes" asp-action="Index">Car's caracteristics</a></li>
+                        <li><a class="navbar-link" asp-area="Admin" asp-controller="Product" asp-action="Index2">Dashboard </a></li>
+                        <li><a class="navbar-link" asp-area="Admin" asp-controller="SpecialTag" asp-action="Index"> Carbide  </a></li>
+
+                    </ul>
+                }
+                @if (User.IsInRole("Proprietaire"))
+                {
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <ul class="nav navbar-nav navbar-left">
+                            <li>
+                                <a asp-area="Proprietaire" asp-controller="Profile" asp-action="listVoiture2" asp-route-id="@UserManager.GetUserId(User)">My cars</a>
+                            </li>
+                        </ul>
+
+                    }
+                }
+                @if (User.IsInRole("Customer"))
+                {
+                    @if (SignInManager.IsSignedIn(User))
+                    {
+                        <ul class="nav navbar-nav navbar-left">
+                            <li>
+                                <a class="navbar-link" asp-area="Customer" asp-controller="Home" asp-action="Cart">
+                                    <span class="glyphicon glyphicon-shopping-cart"></span>(@count)
+                                </a>
+                            </li>
+                        </ul>
+
+                      }
+                }
+                <partial name="_LoginPartial" />
+</div>
+        </div>
+    </nav>
+
+    <partial name="_CookieConsentPartial" />
+
+    <div class="container body-content">
+        <div class="container">
+            @RenderBody()
+        </div>
+        <div class="container">
+            <hr />
+            <footer class="site-footer" style="margin-bottom:0px;background-color:darkgray">
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <h6>About</h6>
+                            <p class="text-justify">Rental Car<i> BUILDING Is SIMPLE </i> is A project that deserves a big clap from you cause it englobes beyond imagination efforts to obtain  a validation grade that WE DESERVE. A project that focuses on Renting Cars and allowing them to enjoy the ride in our humble website .This website was built in different programming languages that include HTML ,CSS,SCSS, Bootstrap, JavaScript,C#.</p>
+                        </div>
+
+                        <div class="col-xs-6 col-md-3">
+                            <h6>Categories</h6>
+                            <ul class="footer-links">
+                                <li><a href="http://scanfcode.com/category/c-language/">ASP.NET</a></li>
+                                <li><a href="http://scanfcode.com/category/front-end-development/">ASP.NET CORE MVC</a></li>
+                                <li><a href="http://scanfcode.com/category/back-end-development/">JAVASCRIPT</a></li>
+                                <li><a href="http://scanfcode.com/category/java-programming-language/">CSS</a></li>
+                                <li><a href="http://scanfcode.com/category/java-programming-language/">C#</a></li>
+                            </ul>
+                        </div>
+
+                        <div class="col-xs-6 col-md-3">
+                            <h6>Quick Links</h6>
+                            <ul class="footer-links">
+                                <li><a href="http://scanfcode.com/about/">About Us</a></li>
+                                <li><a href="http://scanfcode.com/contact/">Contact Us</a></li>
+                                <li><a href="http://scanfcode.com/contribute-at-scanfcode/">Contribute</a></li>
+                                <li><a href="http://scanfcode.com/privacy-policy/">Privacy Policy</a></li>
+
+                            </ul>
+                        </div>
+                    </div>
+                    <hr>
+                </div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-8 col-sm-6 col-xs-12">
+                            <p class="copyright-text">
+                                Copyright &copy; 2020 All Rights Reserved by
+                                <a href="#">Rental Car Company</a>.
+                            </p>
+                        </div>
+
+                        <div class="col-md-4 col-sm-6 col-xs-12">
+
+                        </div>
+                    </div>
+                </div>
+            </footer>
+            </div>
+        </div>
+
+    <environment include="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+
+    <environment exclude="Development">
+        <script src="https://ajax.aspnetcdn.com/ajax/jquery/jquery-3.3.1.min.js"
+                asp-fallback-src="~/lib/jquery/dist/jquery.min.js"
+                asp-fallback-test="window.jQuery"
+                crossorigin="anonymous"
+                integrity="sha384-tsQFqpEReu7ZLhBV2VZlAu7zcOV+rXbYlF2cqB8txI/8aZajjp4Bqd+V6D5IgvKT">
+        </script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"
+                asp-fallback-src="~/lib/bootstrap/dist/js/bootstrap.min.js"
+                asp-fallback-test="window.jQuery && window.jQuery.fn && window.jQuery.fn.modal"
+                crossorigin="anonymous"
+                integrity="sha384-aJ21OjlMXNL5UyIl/XNwTMqvzeRMZH2w8c5cRVpzpU8Y5bApTppSuUkhZXN0VxHd">
+        </script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+
+
+    </environment>
+    <script src="//cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

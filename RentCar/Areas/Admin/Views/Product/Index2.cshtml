@@ -1,0 +1,207 @@
+﻿@model IEnumerable<RentCar.Models.ProductUser>
+
+@{
+    ViewData["Title"] = "Dashboard";
+}
+
+<h2 class="text-capitalize text-info">Dashboard</h2>
+
+<script src="~/lib/Chart.js/Chart.js"></script>
+
+<canvas id="myChart" style="background-color:black;margin-bottom:20px;width:100px;height:40px"></canvas>
+
+
+<canvas id="myChart1" style="background-color:black;margin-bottom:20px;width:100px;height:40px"></canvas>
+<script>
+    var ctx = document.getElementById('myChart').getContext('2d');
+    var myChart = new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: ['Dacia', 'Golf', 'Ford', ' Pickup', 'Renault', 'uno', 'Mazda', 'Buggati', 'Ferrari'],
+            datasets: [{
+
+                label: 'Price',
+                data: [100, 200, 200, 100, 150, 100, 1000, 1500, 2000],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+                
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+
+            },
+
+            title: {
+                display: true,
+                text: 'Price of Most Popular Rent Cars',
+                fontSize: 3,
+                position: 'center'
+            }
+
+        }
+
+    });
+</script>
+<script>
+    var ctx1 = document.getElementById('myChart1').getContext('2d');
+    var myChart1 = new Chart(ctx1, {
+        type: 'pie',
+        data: {
+            labels: ['Dacia', 'Golf', 'Ford', ' Pickup', 'Renault', 'uno', 'Mazda', 'Buggati', 'Ferrari'],
+            datasets: [{
+
+                label: 'Price',
+                data: [100, 200, 200, 100, 150, 100, 1000, 1500, 2000],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.2)',
+                    'rgba(54, 162, 235, 0.2)',
+                    'rgba(255, 206, 86, 0.2)',
+                    'rgba(75, 192, 192, 0.2)',
+                    'rgba(153, 102, 255, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)',
+                    'rgba(255, 159, 64, 0.2)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 159, 64, 1)'
+                ],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+
+            },
+
+            title: {
+                display: true,
+                text: 'Price of Most Popular Rent Cars',
+                fontSize: 3,
+                position: 'center'
+            }
+
+        }
+
+    });
+</script>
+<p>
+    <a asp-action="Create2" class="btn btn-info">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Matricule)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.annee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Kilometrage)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ProductColor)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.IsAvailable)
+            </th>
+            <th>
+                Caracteristic
+            </th>
+            <th>
+                Carbide
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Matricule)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.annee)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Kilometrage)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Price)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductColor)
+                </td>
+                <td>
+                    @if (item.IsAvailable)
+                    {<p>Available</p> }
+                    else
+                    { <p>Not Available</p>}
+
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductTypes.ProductType)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SpecialTag.Name)
+                </td>
+
+                <td>
+                    <a class="btn btn-success" asp-action="Edit" asp-route-id="@item.Id">Edit</a>
+                    <a class="btn btn-warning" asp-action="Details" asp-route-id="@item.Id">Details</a>
+                    <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
